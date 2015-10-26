@@ -1,6 +1,10 @@
 # cse118-218-fa15_Team05
 #ergoTracker
 by the MaxUbi Team
+Team Name: TBA
+CSE 218: Thripura Ajay Mohan, Xinyu Zhang
+CSE 118: Hien Hoang, kevin Tran, Michael Chang
+Meeting Time: Tuesday 6-8
 
 An application that runs using Kinect v1. We track a user’s sitting posture and related habits during work, to give real time healthy advice and warning, and statistical health report.
 
