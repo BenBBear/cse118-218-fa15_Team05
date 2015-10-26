@@ -4,7 +4,7 @@ by the MaxUbi Team
 
 An application that runs using Kinect v1. We track a user’s sitting posture and related habits during work, to give real time healthy advice and warning, and statistical health report.
 
-I. Setting Up the Environment You have two hardware components to integrate: Microsoft Kinect and EyeTribe eye tracker
+I. Setting Up the Kinect v1 in a Windows8 Surface Pro
 
 a) Setting up Kinect v1
 
