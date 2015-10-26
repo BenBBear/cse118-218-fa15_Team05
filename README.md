@@ -5,6 +5,7 @@ by the MaxUbi Team
 Team Memembers:
 
 CSE 218: Thripura Ajay Mohan, Xinyu Zhang
+
 CSE 118: Hien Hoang, kevin Tran, Michael Chang
 Meeting Time: Tuesday 6-8
 
