@@ -21,11 +21,11 @@ namespace ErgoTracker
             string appName = Process.GetCurrentProcess().ProcessName + ".exe";
             SetIEVersionKeyForWebBrowserControl(appName);
             var Form_1 = new Form1();
-            var KinectView = new KinectForm();
+            //var KinectView = new KinectForm();
 
             Form_1.Show();
 
-            KinectView.Show();
+            //KinectView.Show();
 
             using (TaskBarControl tbc = new TaskBarControl())
             {

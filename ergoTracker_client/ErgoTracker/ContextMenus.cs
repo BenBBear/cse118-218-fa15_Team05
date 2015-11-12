@@ -32,6 +32,14 @@ namespace ErgoTracker
             item.Click += new EventHandler(Data_Review_Click);
             menu.Items.Add(item);
 
+            /*
+             * Track current position.
+             */
+            item = new ToolStripMenuItem();
+            item.Text = "View Current Posture";
+            item.Click += new EventHandler(Open_Kinect_View_Click);
+            menu.Items.Add(item);
+
             // separator.
             sep = new ToolStripSeparator();
             menu.Items.Add(sep);
@@ -50,11 +58,20 @@ namespace ErgoTracker
         void Modes_Click(object sender, EventArgs e)
         {
             // do nothing for now
+            var modes_form = new ModesForm();
+            modes_form.Show();
         }
 
         void Data_Review_Click(object sender, EventArgs e)
         {
             // do nothing for now
+            System.Diagnostics.Process.Start("http://maxubi.herokuapp.com/info");
+        }
+
+        void Open_Kinect_View_Click(object sender, EventArgs e)
+        {
+            var kinect_form = new KinectForm();
+            kinect_form.Show();
         }
 
         void Log_Off_Click(object sender, EventArgs e)
