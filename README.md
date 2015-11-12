@@ -18,5 +18,5 @@ a) Setting up Kinect v1
 
 2. Download and install Microsfot Kinect Studio v1.8 (http://www.microsoft.com/en-us/download/details.aspx?id=40278)
 
-3. Install Visual Studio to develop the C++/C# applications for Kinect.
+3. Install Visual Studio to develop the C++/C# applications for Kinect.(https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409)
 
