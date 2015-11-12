@@ -25,13 +25,14 @@ namespace ErgoTracker
 
             Form_1.Show();
 
-            //TaskBarForm tb_form = new TaskBarForm();
-            //ApplicationContext appContext = new ApplicationContext();
-            //appContext.MainForm = tb_form;
-            //tb_form.Show();
             KinectView.Show();
 
-            Application.Run();
+            using (TaskBarControl tbc = new TaskBarControl())
+            {
+                tbc.Display();
+
+                Application.Run();
+            }
             //Application.Run(new Form1());
             //Application.Run(new KinectForm());
         }

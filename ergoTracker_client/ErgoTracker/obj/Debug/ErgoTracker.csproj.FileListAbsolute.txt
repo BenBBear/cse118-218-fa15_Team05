@@ -22,4 +22,4 @@ C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\Ergo
 C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.KinectForm.resources
 C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.Properties.Resources.resources
 C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.csproj.GenerateResource.Cache
-C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.TaskBarForm.resources
+C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\bin\Debug\Icon.ico
