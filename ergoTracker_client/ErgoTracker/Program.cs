@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Kinect;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,16 +19,20 @@ namespace ErgoTracker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            MyKinect myKinect = new MyKinect();
+            if (!myKinect.InitializeKinectSensor(true, true, true)) Application.Exit();
+            
             string appName = Process.GetCurrentProcess().ProcessName + ".exe";
             SetIEVersionKeyForWebBrowserControl(appName);
             var Form_1 = new Form1();
-            //var KinectView = new KinectForm();
+//            var KinectView = new KinectForm(myKinect.getSensor());
 
             Form_1.Show();
 
-            //KinectView.Show();
+//            KinectView.Show();
 
-            using (TaskBarControl tbc = new TaskBarControl())
+            using (TaskBarControl tbc = new TaskBarControl(myKinect))
             {
                 tbc.Display();
 

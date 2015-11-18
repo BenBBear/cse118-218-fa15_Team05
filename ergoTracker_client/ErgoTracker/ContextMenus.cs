@@ -9,12 +9,14 @@ namespace ErgoTracker
 {
     class ContextMenus
     {
-        public ContextMenuStrip Create()
+        MyKinect kinect;
+
+        public ContextMenuStrip Create(MyKinect _kinect)
         {
             ContextMenuStrip menu = new ContextMenuStrip();
             ToolStripMenuItem item;
             ToolStripSeparator sep;
-
+            kinect = _kinect;
             /*
              * This tool strip menu item will allow you to choose
              * what mode you want to be in. "Tutorial" or "Capturing"
@@ -70,7 +72,7 @@ namespace ErgoTracker
 
         void Open_Kinect_View_Click(object sender, EventArgs e)
         {
-            var kinect_form = new KinectForm();
+            var kinect_form = new KinectForm(kinect.getSensor());
             kinect_form.Show();
         }
 

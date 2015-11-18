@@ -11,10 +11,12 @@ namespace ErgoTracker
     class TaskBarControl : IDisposable
     {
         NotifyIcon _icon;
-        public TaskBarControl()
+        MyKinect kinect;
+
+        public TaskBarControl(MyKinect _kinect)
         {
             _icon = new NotifyIcon();
-
+            kinect = _kinect;
         }
 
         public void Display()
@@ -24,7 +26,7 @@ namespace ErgoTracker
             _icon.Text = "Demo";
             _icon.Visible = true;
 
-            _icon.ContextMenuStrip = new ContextMenus().Create();
+            _icon.ContextMenuStrip = new ContextMenus().Create(kinect);
         }
 
         public void Dispose()

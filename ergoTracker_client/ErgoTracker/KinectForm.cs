@@ -15,36 +15,27 @@ namespace ErgoTracker
 {
     public partial class KinectForm : Form
     {
-        public KinectForm()
+        KinectSensor myKinect;
+
+        public KinectForm(KinectSensor kinect)
         {
             InitializeComponent();
+            myKinect = kinect;
         }
-
-        KinectSensor myKinect;
 
         private void KinectForm_Load(object sender, EventArgs e)
         {
-            if (Microsoft.Kinect.KinectSensor.KinectSensors.Count == 0)
-            {
-                MessageBox.Show("No Kinect devices detected!", "Camera View");
-                return;
-            }
-
-            try
+            if (!myKinect.IsRunning)
             {
                 myKinect = KinectSensor.KinectSensors[0];
                 myKinect.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
                 myKinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
                 myKinect.SkeletonStream.Enable();
 
-                myKinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(myKinect_AllFramesReady);
                 myKinect.Start();
             }
-            catch
-            {
-                MessageBox.Show("Kinect Initialization Failed");
-                return;
-            }
+
+            myKinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(myKinect_AllFramesReady);
         }
 
         Bitmap _bitmap;
@@ -63,28 +54,40 @@ namespace ErgoTracker
                 {
                     //_bitmap = CreateBitmapFromDepthFrame(frame);
                     _bitmap = CreateBitmapFromColorImage(frame);
-                    DrawHead(e.OpenSkeletonFrame(), _bitmap);
+                    DrawSkeleton(e.OpenSkeletonFrame(), _bitmap);
                 }
             }
         }
 
-        private void DrawHead(SkeletonFrame frame, Bitmap bitmap)
+        private void DrawSkeleton(SkeletonFrame frame, Bitmap bitmap)
         {
             if (frame != null)
             {
                 Skeleton[] skeletons = new Skeleton[frame.SkeletonArrayLength];
                 frame.CopySkeletonDataTo(skeletons);
+                Skeleton skeletonToUse = null;
 
+                float depth = float.MaxValue;
                 foreach (Skeleton s in skeletons)
                 {
                     if (s.TrackingState == SkeletonTrackingState.Tracked)
                     {
-                        SkeletonPoint sloc = s.Joints[JointType.Head].Position;
-                        ColorImagePoint cloc = myKinect.CoordinateMapper.MapSkeletonPointToColorPoint(sloc, ColorImageFormat.RgbResolution640x480Fps30);
-                        markAtPoint(cloc, bitmap);
-                        DrawSkeleton(s, bitmap);
+                        if (s.Position.Z < depth && s.Position.Z != 0)
+                        {
+                            depth = s.Position.Z;
+                            skeletonToUse = s;
+                        }
                     }
                 }
+
+                if (skeletonToUse != null)
+                {
+                    SkeletonPoint sloc = skeletonToUse.Joints[JointType.Head].Position;
+                    ColorImagePoint cloc = myKinect.CoordinateMapper.MapSkeletonPointToColorPoint(sloc, ColorImageFormat.RgbResolution640x480Fps30);
+                    markAtPoint(cloc, bitmap);
+                    DrawSkeleton(skeletonToUse, bitmap);
+                }
+
             }
         }
 
