@@ -86,9 +86,38 @@ namespace ErgoTracker
                     ColorImagePoint cloc = myKinect.CoordinateMapper.MapSkeletonPointToColorPoint(sloc, ColorImageFormat.RgbResolution640x480Fps30);
                     markAtPoint(cloc, bitmap);
                     DrawSkeleton(skeletonToUse, bitmap);
+                    DrawInformation(skeletonToUse, bitmap);
                 }
 
             }
+        }
+
+        private void DrawInformation(Skeleton s, Bitmap bitmap)
+        {
+            if (bitmap == null) return;
+
+
+            Joint head = s.Joints[JointType.Head];
+            Double[] headcoordinate = getJointCoordinate(head);
+            Joint shouldercenter = s.Joints[JointType.ShoulderCenter];
+            Double[] shouldercentercoordinate = getJointCoordinate(shouldercenter);
+            Joint shoulderleft = s.Joints[JointType.ShoulderLeft];
+            Double[] shoulderleftcoordinate = getJointCoordinate(shoulderleft);
+            Joint shoulderright = s.Joints[JointType.ShoulderRight];
+            Double[] shoulderrightcoordinate = getJointCoordinate(shoulderright);
+            Joint spine = s.Joints[JointType.Spine];
+            Double[] spinecoordinate = getJointCoordinate(spine);
+            Joint hipcenter = s.Joints[JointType.HipCenter];
+            Double[] hipcentercoordinate = getJointCoordinate(hipcenter);
+            Joint hipleft = s.Joints[JointType.HipLeft];
+            Double[] hipleftcoordinate = getJointCoordinate(hipleft);
+            Joint hipright = s.Joints[JointType.HipRight];
+            Double[] hiprightcoordinate = getJointCoordinate(hipright);
+
+
+            Graphics g = Graphics.FromImage(bitmap);
+            DisplayCoordinate(headcoordinate, shouldercentercoordinate, shoulderleftcoordinate, shoulderrightcoordinate,
+                spinecoordinate, hipcentercoordinate, hipleftcoordinate, hiprightcoordinate, g);
         }
 
         private void DrawSkeleton(Skeleton s, Bitmap bitmap)
@@ -185,6 +214,57 @@ namespace ErgoTracker
             {
                 System.Diagnostics.EventLog.WriteEntry("Error Occurred in drawing skeleton.", e.ToString());
             }
+        }
+
+        private void DisplayCoordinate(Double[] h, Double[] s, Double[] sl, Double[] sr,
+    Double[] sp, Double[] hp, Double[] hpl, Double[] hpr, Graphics g)
+        {
+
+            g.DrawString("Joint Information:",
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 30);
+
+            g.DrawString("head: " + ", " + string.Format("{0:0.0000}", h[0])
+                + ", " + string.Format("{0:0.0000}", h[1]) + ", " + string.Format("{0:0.0000}", h[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 50);
+
+            g.DrawString("shoulder center: " + ", " + string.Format("{0:0.0000}", s[0])
+                + ", " + string.Format("{0:0.0000}", s[1]) + ", " + string.Format("{0:0.0000}", s[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 70);
+
+            g.DrawString("shoulder left: " + ", " + string.Format("{0:0.0000}", sl[0])
+                + ", " + string.Format("{0:0.0000}", sl[1]) + ", " + string.Format("{0:0.0000}", sl[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 90);
+
+            g.DrawString("shoulder right: " + ", " + string.Format("{0:0.0000}", sr[0])
+                + ", " + string.Format("{0:0.0000}", sr[1]) + ", " + string.Format("{0:0.0000}", sr[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 110);
+
+            g.DrawString("spine: " + ", " + string.Format("{0:0.0000}", sp[0])
+                + ", " + string.Format("{0:0.0000}", sp[1]) + ", " + string.Format("{0:0.0000}", sp[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 130);
+
+            g.DrawString("Hip center: " + ", " + string.Format("{0:0.0000}", hp[0])
+                + ", " + string.Format("{0:0.0000}", hp[1]) + ", " + string.Format("{0:0.0000}", hp[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 150);
+
+            g.DrawString("hip left: " + ", " + string.Format("{0:0.0000}", hpl[0])
+                + ", " + string.Format("{0:0.0000}", hpl[1]) + ", " + string.Format("{0:0.0000}", hpl[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 170);
+
+            g.DrawString("hip right: " + ", " + string.Format("{0:0.0000}", hpr[0])
+                + ", " + string.Format("{0:0.0000}", hpr[1]) + ", " + string.Format("{0:0.0000}", hpr[2]),
+             new Font("Arial", 10, FontStyle.Regular), Brushes.GreenYellow, 10, 190);
+
+        }
+
+        private Double[] getJointCoordinate(Joint j)
+        {
+
+            Double X = j.Position.X;
+            Double Y = j.Position.Y;
+            Double Z = j.Position.Z;
+            Double[] coordinate = new Double[] { X, Y, Z };
+            return coordinate;
         }
     }
 }
