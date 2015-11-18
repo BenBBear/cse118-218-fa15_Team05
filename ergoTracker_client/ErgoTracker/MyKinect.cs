@@ -51,7 +51,29 @@ namespace ErgoTracker
         private void myKinect_AllFramesReady(object sender, AllFramesReadyEventArgs e)
         {
             // do event handling of when all frames are ready here
-            String s = "hello";
+            SkeletonFrame frame = e.OpenSkeletonFrame();
+
+            Skeleton[] skeletons = new Skeleton[frame.SkeletonArrayLength];
+            frame.CopySkeletonDataTo(skeletons);
+            Skeleton skeletonToUse = null;
+
+            float depth = float.MaxValue;
+            foreach (Skeleton s in skeletons)
+            {
+                if (s.TrackingState == SkeletonTrackingState.Tracked)
+                {
+                    if (s.Position.Z < depth && s.Position.Z != 0)
+                    {
+                        depth = s.Position.Z;
+                        skeletonToUse = s;
+                    }
+                }
+            }
+
+            if (skeletonToUse != null)
+            {
+                string jsonStr = JsonConverter.createJSONString("", skeletonToUse);
+            }
         }
         
         public KinectSensor getSensor()
