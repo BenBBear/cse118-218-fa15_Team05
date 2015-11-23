@@ -18,12 +18,12 @@ namespace ErgoTracker
             InitializeComponent();
         }
 
-        public void document_completed(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void maxUbi_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            this.Maxubi.Document.Body.MouseDown += new HtmlElementEventHandler(document_mouseDown);
+
         }
 
-        private void document_mouseDown(object sender, HtmlElementEventArgs e)
+        private void maxUbi_DocumentNavigating(object sender, WebBrowserNavigatingEventArgs e)
         {
 
         }

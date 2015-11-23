@@ -42,7 +42,8 @@
             System.Uri uri = new System.Uri("http://maxubi.herokuapp.com/login", System.UriKind.Absolute);
             this.Maxubi.Navigate(uri);
 
-            this.Maxubi.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(document_completed);
+            this.Maxubi.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(maxUbi_DocumentNavigating);
+            this.Maxubi.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(maxUbi_DocumentCompleted);
             // 
             // Form1
             // 

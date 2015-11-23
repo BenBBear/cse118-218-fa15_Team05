@@ -54,7 +54,8 @@ namespace ErgoTracker
                 {
                     //_bitmap = CreateBitmapFromDepthFrame(frame);
                     _bitmap = CreateBitmapFromColorImage(frame);
-                    DrawSkeleton(e.OpenSkeletonFrame(), _bitmap);
+                    using (var skel_frame = e.OpenSkeletonFrame())
+                        DrawSkeleton(skel_frame, _bitmap);
                 }
             }
         }

@@ -20,8 +20,10 @@ namespace ErgoTracker
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // initialize data objects
             MyKinect myKinect = new MyKinect();
             if (!myKinect.InitializeKinectSensor(true, true, true)) Application.Exit();
+            //CustomWebSocket socket = new CustomWebSocket();
             
             string appName = Process.GetCurrentProcess().ProcessName + ".exe";
             SetIEVersionKeyForWebBrowserControl(appName);

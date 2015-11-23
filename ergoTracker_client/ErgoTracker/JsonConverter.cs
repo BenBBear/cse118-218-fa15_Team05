@@ -12,23 +12,24 @@ namespace ErgoTracker
         public static string createJSONString(string email, Skeleton skel)
         {
             string jsonString = "{";
-            writeBasicInformation(email, jsonString);
-            writeFrameData(skel, jsonString);
-            closeJsonStringObject(jsonString);
+            jsonString = writeBasicInformation(email, jsonString);
+            jsonString = writeFrameData(skel, jsonString);
+            jsonString = closeJsonStringObject(jsonString);
 
             return jsonString;
         }
 
-        private static void writeBasicInformation(string email, string jsonString)
+        private static string writeBasicInformation(string email, string jsonString)
         {
             double current_time = ConvertToUnixTimestamp(DateTime.Today);
             string new_string = "\"email\":\"" + email + "\", \"date\":\"" + current_time + "\"";
             jsonString += new_string;
+            return jsonString;
         }
 
-        private static void writeFrameData(Skeleton skel, string jsonString)
+        private static string writeFrameData(Skeleton skel, string jsonString)
         {
-            if (skel == null) return;
+            if (skel == null) return jsonString;
 
             jsonString += ", \"SkeletonData\":[ ";
             Joint[] joints = { skel.Joints[JointType.Head], skel.Joints[JointType.ShoulderCenter],
@@ -40,7 +41,7 @@ namespace ErgoTracker
             string joint_str = "{";
             foreach (Joint j in joints)
             {
-                string joint_name = j.ToString();
+                string joint_name = j.JointType.ToString();
                 joint_str += "\"jointname\":\"" + joint_name + "\"";
                 float x_coord = j.Position.X;
                 joint_str += ", \"x\":" + x_coord;
@@ -50,15 +51,19 @@ namespace ErgoTracker
                 joint_str += ", \"z\":" + z_coord;
                 joint_str += "},";
                 jsonString += joint_str;
+                joint_str = "{";
             }
 
-            jsonString.Remove(jsonString.Count() - 1);
+            jsonString = jsonString.Remove(jsonString.Count() - 1);
             jsonString += "]";
+
+            return jsonString;
         }
 
-        private static void closeJsonStringObject(string jsonString)
+        private static string closeJsonStringObject(string jsonString)
         {
             jsonString += "}";
+            return jsonString;
         }
 
         private static DateTime ConvertFromUnixTimestamp(double timestamp)

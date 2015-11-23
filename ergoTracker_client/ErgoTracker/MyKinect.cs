@@ -11,7 +11,7 @@ namespace ErgoTracker
     class MyKinect
     {
         private KinectSensor myKinect;
-        
+        int counter = 0;
 
         public MyKinect()
         { }
@@ -72,8 +72,18 @@ namespace ErgoTracker
 
             if (skeletonToUse != null)
             {
+                ++counter;
                 string jsonStr = JsonConverter.createJSONString("", skeletonToUse);
+                //Console.WriteLine(jsonStr);
+                if (counter == 30)
+                {
+                    counter = 0;
+                    // do web socket stuff here!
+
+                }
             }
+
+            frame.Dispose();
         }
         
         public KinectSensor getSensor()
