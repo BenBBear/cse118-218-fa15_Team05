@@ -32,6 +32,8 @@ namespace ErgoTracker
 
             Form_1.Show();
 
+            CustomToast.CreateToast("Critical!", "You're posture is in the danger zone!", ToastAlertImageColors.RedAlert);
+
 //            KinectView.Show();
 
             using (TaskBarControl tbc = new TaskBarControl(myKinect))
