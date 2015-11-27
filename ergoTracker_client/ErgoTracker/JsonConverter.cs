@@ -9,7 +9,7 @@ namespace ErgoTracker
 {
     class JsonConverter
     {
-        public static string createJSONString(string email, Skeleton skel)
+        public static string createKinectDataString(string email, Skeleton skel)
         {
             string jsonString = "{";
             jsonString = writeBasicInformation(email, jsonString);

@@ -8,18 +8,13 @@ using System.Windows.Forms;
 
 namespace ErgoTracker
 {
-    class MyKinect
+    public class MyKinect
     {
         private KinectSensor myKinect;
         int counter = 0;
 
         public MyKinect()
         { }
-
-        ~MyKinect()
-        {
-            myKinect.AllFramesReady -= myKinect_AllFramesReady;
-        }
 
         public Boolean InitializeKinectSensor(bool depthSensorActive, bool colorSensorActive, bool skeletonSensorActive)
         {
@@ -53,6 +48,8 @@ namespace ErgoTracker
             // do event handling of when all frames are ready here
             SkeletonFrame frame = e.OpenSkeletonFrame();
 
+            if (frame == null) return;
+
             Skeleton[] skeletons = new Skeleton[frame.SkeletonArrayLength];
             frame.CopySkeletonDataTo(skeletons);
             Skeleton skeletonToUse = null;
@@ -73,7 +70,7 @@ namespace ErgoTracker
             if (skeletonToUse != null)
             {
                 ++counter;
-                string jsonStr = JsonConverter.createJSONString("", skeletonToUse);
+                string jsonStr = JsonConverter.createKinectDataString("", skeletonToUse);
                 //Console.WriteLine(jsonStr);
                 if (counter == 30)
                 {
