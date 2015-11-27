@@ -9,12 +9,12 @@ namespace ErgoTracker
 {
     class JsonConverter
     {
-        public static string createKinectDataString(string email, Skeleton skel)
+        public static string createKinectDataString(string email)
         {
             string jsonString = "{";
             jsonString = writeBasicInformation(email, jsonString);
-            jsonString = writeFrameData(skel, jsonString);
-            jsonString = closeJsonStringObject(jsonString);
+//            jsonString = writeFrameData(skel, jsonString);
+//            jsonString = closeJsonStringObject(jsonString);
 
             return jsonString;
         }
@@ -22,47 +22,48 @@ namespace ErgoTracker
         private static string writeBasicInformation(string email, string jsonString)
         {
             double current_time = ConvertToUnixTimestamp(DateTime.Today);
-            string new_string = "\"email\":\"" + email + "\", \"date\":\"" + current_time + "\"";
+            string new_string = "\"userId\":\"" + email + "\"," + " \"Points\":[";
             jsonString += new_string;
             return jsonString;
         }
 
-        private static string writeFrameData(Skeleton skel, string jsonString)
+        public static string writeFrameData(Skeleton skel, string jsonString)
         {
             if (skel == null) return jsonString;
 
-            jsonString += ", \"SkeletonData\":[ ";
             Joint[] joints = { skel.Joints[JointType.Head], skel.Joints[JointType.ShoulderCenter],
                                 skel.Joints[JointType.ShoulderLeft], skel.Joints[JointType.ShoulderRight],
                                 skel.Joints[JointType.ElbowLeft], skel.Joints[JointType.ElbowRight],
                                 skel.Joints[JointType.Spine], skel.Joints[JointType.HipCenter],
                                 skel.Joints[JointType.HipLeft], skel.Joints[JointType.HipRight] };
 
-            string joint_str = "{";
+            string joint_str = "{ ";
             foreach (Joint j in joints)
             {
                 string joint_name = j.JointType.ToString();
-                joint_str += "\"jointname\":\"" + joint_name + "\"";
+                joint_str += "\"" + joint_name + "\":{";
                 float x_coord = j.Position.X;
-                joint_str += ", \"x\":" + x_coord;
+                joint_str += "\"x\":" + x_coord;
                 float y_coord = j.Position.Y;
                 joint_str += ", \"y\":" + y_coord;
                 float z_coord = j.Position.Z;
                 joint_str += ", \"z\":" + z_coord;
                 joint_str += "},";
                 jsonString += joint_str;
-                joint_str = "{";
+                joint_str = "";
             }
 
             jsonString = jsonString.Remove(jsonString.Count() - 1);
-            jsonString += "]";
+            jsonString += "},";
 
             return jsonString;
         }
 
-        private static string closeJsonStringObject(string jsonString)
+        public static string closeJsonStringObject(string jsonString)
         {
-            jsonString += "}";
+            jsonString = jsonString.Remove(jsonString.Count() - 1);
+            jsonString += "]}";
+
             return jsonString;
         }
 

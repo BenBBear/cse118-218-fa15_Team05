@@ -12,6 +12,8 @@ namespace ErgoTracker
     {
         private KinectSensor myKinect;
         int counter = 0;
+        int totalDataCounter = 0;
+        string data = "";
 
         public MyKinect()
         { }
@@ -70,13 +72,24 @@ namespace ErgoTracker
             if (skeletonToUse != null)
             {
                 ++counter;
-                string jsonStr = JsonConverter.createKinectDataString("", skeletonToUse);
+                //string jsonStr = JsonConverter.createKinectDataString("", skeletonToUse);
                 //Console.WriteLine(jsonStr);
-                if (counter == 30)
+                if (totalDataCounter == 0)
+                    data = JsonConverter.createKinectDataString(ApplicationInformation.Instance.getUsername());
+                if (counter == 6)
                 {
                     counter = 0;
-                    // do web socket stuff here!
+                    totalDataCounter++;
+                    data = JsonConverter.writeFrameData(skeletonToUse, data);
 
+                    // should be flushing to the server about once a minute
+                    if (totalDataCounter == 300)
+                    {
+                        data = JsonConverter.closeJsonStringObject(data);
+                        // flush data to the server here!
+
+                        totalDataCounter = 0;
+                    }
                 }
             }
 
