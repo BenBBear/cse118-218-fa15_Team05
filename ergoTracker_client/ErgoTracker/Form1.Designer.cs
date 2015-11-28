@@ -39,8 +39,11 @@
             this.Maxubi.Name = "Maxubi";
             this.Maxubi.Size = new System.Drawing.Size(2048, 1398);
             this.Maxubi.TabIndex = 0;
-            System.Uri uri = new System.Uri("http://maxubi.herokuapp.com", System.UriKind.Absolute);
+            System.Uri uri = new System.Uri("http://maxubi.herokuapp.com/login", System.UriKind.Absolute);
             this.Maxubi.Navigate(uri);
+
+            this.Maxubi.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(maxUbi_DocumentNavigating);
+            this.Maxubi.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(maxUbi_DocumentCompleted);
             // 
             // Form1
             // 

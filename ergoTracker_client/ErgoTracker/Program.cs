@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Kinect;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ namespace ErgoTracker
 {
     static class Program
     {
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -18,15 +20,32 @@ namespace ErgoTracker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // create first instance of app info
+            ApplicationInformation appInfo = ApplicationInformation.Instance;
+
+            // initialize data objects
+            MyKinect myKinect = new MyKinect();
+            //if (!myKinect.InitializeKinectSensor(true, true, true)) Application.Exit();
+            //CustomWebSocket socket = new CustomWebSocket();
+            
             string appName = Process.GetCurrentProcess().ProcessName + ".exe";
             SetIEVersionKeyForWebBrowserControl(appName);
-            var Form_1 = new Form1();
-            var KinectView = new KinectForm();
+            var Form_1 = new Form1(myKinect);
+//            var KinectView = new KinectForm(myKinect.getSensor());
 
             Form_1.Show();
-            KinectView.Show();
 
-            Application.Run();
+            //CustomToast.CreateToast("Critical!", "You're posture is in the danger zone!", ToastAlertImageColors.RedAlert);
+
+//            KinectView.Show();
+
+            using (TaskBarControl tbc = new TaskBarControl(myKinect))
+            {
+                tbc.Display();
+
+                Application.Run();
+            }
             //Application.Run(new Form1());
             //Application.Run(new KinectForm());
         }
