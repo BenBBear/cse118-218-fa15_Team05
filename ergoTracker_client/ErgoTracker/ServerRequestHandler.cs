@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace ErgoTracker
 {
-    class ServerRequestHandler
+    public class ServerRequestHandler
     {
-        string url = "http://server.com"; // TODO: need to edit.
+        string url = "http://52.89.152.186:9000"; // TODO: need to edit.
         string result = null;
+
+        public event EventHandler ReceivedScoreData;
             
         public void postKinectData(string jsonData)
         {
             result = null;
-            url += "/post/kinect_data";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            string url_to_use = url + "/post/kinect_data";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url_to_use);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -42,6 +44,11 @@ namespace ErgoTracker
                     using (var reader = new StreamReader(responseStream))
                     {
                         result = reader.ReadToEnd();
+                        if (ReceivedScoreData != null)
+                        {
+                            ReceivedScoreData(this, new DataEventHandlerArgs(result));
+                        }
+                        Console.WriteLine(result);
                     }
                     responseStream.Close();
                 }
@@ -52,22 +59,25 @@ namespace ErgoTracker
             }
         }
 
-        public void getDiagnosticData(string jsonData)
+        public void getDiagnosticData(DateTime fromDate, DateTime toDate)
         {
             result = null;
-            url += "/get/diagnostic_data";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            string url_to_use = url + "/get/diagnostic_data?";
+
+            string dateTimeFormat = "ddd MMM d yyyy";
+            string fromDateWithFormat = fromDate.ToString(dateTimeFormat);
+            string toDateWithFormat = toDate.ToString(dateTimeFormat);
+
+            url_to_use += "fromDate=\'" + fromDateWithFormat + "\'&";
+            url_to_use += "toDate=\'" + toDateWithFormat + "\'&";
+            url_to_use += "userid=\'" + ApplicationInformation.Instance.getUsername();
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url_to_use);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "GET";
 
-            using (var streamwriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamwriter.Write(jsonData);
-                streamwriter.Flush();
-                streamwriter.Close();
-            }
-
             httpWebRequest.BeginGetResponse(new AsyncCallback(GetDiagnosticDataCallback), httpWebRequest);
+            
         }
 
         private void GetDiagnosticDataCallback(IAsyncResult asynchronousResult)
@@ -81,6 +91,7 @@ namespace ErgoTracker
                     using (var reader = new StreamReader(responseStream))
                     {
                         result = reader.ReadToEnd();
+                        
                     }
                     responseStream.Close();
                 }
@@ -94,6 +105,21 @@ namespace ErgoTracker
         public void getTodaysScore(string jsonData)
         {
 
+        }
+    }
+    
+    public class DataEventHandlerArgs : EventArgs
+    {
+        private readonly string data;
+
+        public DataEventHandlerArgs(string data)
+        {
+            this.data = data;
+        }
+
+        public string Data
+        {
+            get { return this.data; }
         }
     }
 }

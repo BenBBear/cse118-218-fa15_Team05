@@ -15,6 +15,12 @@ namespace ErgoTracker
         public ModesForm()
         {
             InitializeComponent();
+
+            if (ApplicationInformation.Instance.isTrainingModeOn()) this.checkBox1.Checked = true;
+            else this.checkBox1.Checked = false;
+
+            if (ApplicationInformation.Instance.isDiagnosticModeOn()) this.checkBox2.Checked = true;
+            else this.checkBox2.Checked = false;
         }
     }
 }

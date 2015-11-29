@@ -11,12 +11,16 @@ namespace ErgoTracker
     public class MyKinect
     {
         private KinectSensor myKinect;
+        private ServerRequestHandler requestHandler;
         int counter = 0;
         int totalDataCounter = 0;
         string data = "";
 
-        public MyKinect()
-        { }
+        public MyKinect(ServerRequestHandler _requestHandler)
+        {
+            this.requestHandler = _requestHandler;
+            this.requestHandler.ReceivedScoreData += HandleScoreReceived;
+        }
 
         public Boolean InitializeKinectSensor(bool depthSensorActive, bool colorSensorActive, bool skeletonSensorActive)
         {
@@ -83,11 +87,12 @@ namespace ErgoTracker
                     data = JsonConverter.writeFrameData(skeletonToUse, data);
 
                     // should be flushing to the server about once a minute
-                    if (totalDataCounter == 300)
+                    if (totalDataCounter == 150)
                     {
                         data = JsonConverter.closeJsonStringObject(data);
                         // flush data to the server here!
-
+                        if (!ApplicationInformation.Instance.isTrainingModeOn())
+                            requestHandler.postKinectData(data);
                         totalDataCounter = 0;
                     }
                 }
@@ -95,10 +100,33 @@ namespace ErgoTracker
 
             frame.Dispose();
         }
-        
+
+        private void HandleScoreReceived(object sender, EventArgs e)
+        {
+            string jsonData = ((DataEventHandlerArgs)e).Data;
+            KinectData data = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<KinectData>(jsonData);
+            Console.WriteLine(data.score);
+            float score = data.score * 100;
+            if (score > 30 && score < 60) CustomToast.CreateToast("Warning!", "Your posture is not too healthy!", ToastAlertImageColors.YellowAlert);
+            else if (score <= 30) CustomToast.CreateToast("Critical!", "Your posture is in the danger zone! Please fix!", ToastAlertImageColors.RedAlert);
+        }
+
         public KinectSensor getSensor()
         {
             return this.myKinect;
         }
+    }
+
+    public class KinectData
+    {
+        public ErrorObject error { get; set; }
+        public float score { get; set; }
+        public string avg_score { get; set; }
+    }
+
+    public class ErrorObject
+    {
+        public string message { get; set; }
+        public string code { get; set; }
     }
 }

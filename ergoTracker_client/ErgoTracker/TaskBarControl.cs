@@ -12,11 +12,13 @@ namespace ErgoTracker
     {
         NotifyIcon _icon;
         MyKinect kinect;
+        ServerRequestHandler requestHandler;
 
-        public TaskBarControl(MyKinect _kinect)
+        public TaskBarControl(MyKinect _kinect, ServerRequestHandler _requestHandler)
         {
             _icon = new NotifyIcon();
             kinect = _kinect;
+            requestHandler = _requestHandler;
         }
 
         public void Display()
@@ -26,7 +28,7 @@ namespace ErgoTracker
             _icon.Text = "Demo";
             _icon.Visible = true;
 
-            _icon.ContextMenuStrip = new ContextMenus().Create(kinect);
+            _icon.ContextMenuStrip = new ContextMenus().Create(kinect, requestHandler);
         }
 
         public void Dispose()
