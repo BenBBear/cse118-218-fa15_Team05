@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../db/db_actions.js');
 var avg_score = Math.round(Math.random() * 100)/100 // This is cached score
 var num = 1;
 /* GET diagnostic data. */
