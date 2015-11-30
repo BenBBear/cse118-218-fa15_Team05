@@ -53,8 +53,8 @@ namespace ErgoTracker
             if (!myKinect.InitializeKinectSensor(true, true, true)) Application.Exit();
             ApplicationInformation appInfo = ApplicationInformation.Instance;
 
-            appInfo.setDiagnosticMode(false);
-            appInfo.setTrainingMode(true);
+            appInfo.setDiagnosticMode(true);
+            appInfo.setTrainingMode(false);
 
             MessageBox.Show("Kinect is ready!", "Application now running!");
             this.Close();

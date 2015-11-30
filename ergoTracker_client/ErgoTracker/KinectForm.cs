@@ -16,11 +16,14 @@ namespace ErgoTracker
     public partial class KinectForm : Form
     {
         KinectSensor myKinect;
+        ServerRequestHandler requestHandler;
 
-        public KinectForm(KinectSensor kinect)
+        public KinectForm(KinectSensor kinect, ServerRequestHandler _requestHandler)
         {
             InitializeComponent();
             myKinect = kinect;
+            requestHandler = _requestHandler;
+            requestHandler.ReceivedScoreData += HandleScoreReceived;
         }
 
         private void KinectForm_Load(object sender, EventArgs e)
@@ -266,6 +269,19 @@ namespace ErgoTracker
             Double Z = j.Position.Z;
             Double[] coordinate = new Double[] { X, Y, Z };
             return coordinate;
+        }
+
+        private void HandleScoreReceived(object sender, EventArgs e)
+        {
+            string jsonData = ((DataEventHandlerArgs)e).Data;
+            KinectData data = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<KinectData>(jsonData);
+            Console.WriteLine(data.score);
+            float score = data.score * 100;
+
+            scorelabel.Text = "" + score;
+            if (score >= 60) scorelabel.ForeColor = Color.DarkGreen;
+            else if (score > 30 && score < 60) scorelabel.ForeColor = Color.DarkOrange;
+            else scorelabel.ForeColor = Color.DarkRed;
         }
     }
 }

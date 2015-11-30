@@ -30,6 +30,9 @@
         private void InitializeComponent()
         {
             this.kinectVideoBox = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.scorelabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.kinectVideoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,22 +45,60 @@
             this.kinectVideoBox.TabIndex = 0;
             this.kinectVideoBox.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
+            this.label1.Location = new System.Drawing.Point(991, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(275, 46);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Posture Score";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
+            this.label2.Location = new System.Drawing.Point(1043, 163);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(189, 15);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "*Updated once every 30 seconds.";
+            // 
+            // scorelabel
+            // 
+            this.scorelabel.AutoSize = true;
+            this.scorelabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F);
+            this.scorelabel.Location = new System.Drawing.Point(1082, 55);
+            this.scorelabel.Name = "scorelabel";
+            this.scorelabel.Size = new System.Drawing.Size(98, 108);
+            this.scorelabel.TabIndex = 3;
+            this.scorelabel.Text = "0";
+            this.scorelabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // KinectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 737);
+            this.Controls.Add(this.scorelabel);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.kinectVideoBox);
             this.Name = "KinectForm";
             this.Text = "KinectForm";
             this.Load += new System.EventHandler(this.KinectForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.kinectVideoBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox kinectVideoBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label scorelabel;
     }
 }

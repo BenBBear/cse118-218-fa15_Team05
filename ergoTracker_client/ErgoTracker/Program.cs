@@ -23,9 +23,10 @@ namespace ErgoTracker
 
             // create first instance of app info
             ApplicationInformation appInfo = ApplicationInformation.Instance;
+            ServerRequestHandler handler = new ServerRequestHandler();
 
             // initialize data objects
-            MyKinect myKinect = new MyKinect();
+            MyKinect myKinect = new MyKinect(handler);
             //if (!myKinect.InitializeKinectSensor(true, true, true)) Application.Exit();
             //CustomWebSocket socket = new CustomWebSocket();
             
@@ -40,7 +41,7 @@ namespace ErgoTracker
 
 //            KinectView.Show();
 
-            using (TaskBarControl tbc = new TaskBarControl(myKinect))
+            using (TaskBarControl tbc = new TaskBarControl(myKinect , handler))
             {
                 tbc.Display();
 

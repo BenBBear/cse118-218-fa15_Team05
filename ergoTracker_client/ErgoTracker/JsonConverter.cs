@@ -40,7 +40,7 @@ namespace ErgoTracker
             string joint_str = "{ ";
             foreach (Joint j in joints)
             {
-                string joint_name = j.JointType.ToString();
+                string joint_name = ConvertJointNameToAPIString(j.JointType); // j.JointType.ToString();
                 joint_str += "\"" + joint_name + "\":{";
                 float x_coord = j.Position.X;
                 joint_str += "\"x\":" + x_coord;
@@ -78,6 +78,35 @@ namespace ErgoTracker
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             TimeSpan diff = date.ToUniversalTime() - origin;
             return Math.Floor(diff.TotalSeconds);
+        }
+
+        private static string ConvertJointNameToAPIString(JointType joint_type)
+        {
+            switch (joint_type.ToString())
+            {
+                case "Head":
+                    return "head";
+                case "ShoulderCenter":
+                    return "shoulder";
+                case "ShoulderLeft":
+                    return "shoulder_left";
+                case "ShoulderRight":
+                    return "shoulder_right";
+                case "ElbowLeft":
+                    return "elbow_left";
+                case "ElbowRight":
+                    return "elbow_right";
+                case "Spine":
+                    return "spine";
+                case "HipCenter":
+                    return "hip_center";
+                case "HipLeft":
+                    return "hip_left";
+                case "HipRight":
+                    return "hip_right";
+                default:
+                    return "";
+            }
         }
     }
 }
