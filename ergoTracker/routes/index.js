@@ -14,31 +14,25 @@ router.use(bodyParser.json());
 
 /* GET diagnostic data. */
 router.get('/get/diagnostic_data', function(req, res, next) {
-    var fromDate = req.query.fromDate;
-    var toDate = req.query.toDate;
+    var fromDate = new Date(req.query.fromDate);
+    var toDate = new Date(req.query.toDate);
     var userId = req.query.userId;;
-    var date = new Date();
-    var prevd = new Date();
+    // var date = new Date();
+    // var prevd = new Date();
     //assert for the data types
     if (typeof(fromDate) == 'undefined' || typeof(toDate) == 'undefined' || typeof(userId) == 'undefined') {
         res.status(500);
         res.send("One of [fromDate, toDate, userId undefined");
         return;
     }
-    //calculate the yesterday's date
-    prevd.setTime(date.getTime() - 1000 * 60 * 60 * 24);
-    var score_arr = {
-        'scores': [{
-            'date': prevd.toDateString(),
-            'score': 41.25
-        }, {
-            'date': date.toDateString(),
-            'score': 65
-        }]
-    }
-
-    res.status(404);
-    res.send(score_arr);
+    db.findByDate(fromDate,toDate, userId,function(err, results){
+        res.json(results.map(function(x){
+            return {
+                score:x.score,
+                date:x.date
+            };
+        }));
+    });        
 });
 
 /* POST kinect data. */
@@ -69,7 +63,8 @@ router.post('/post/kinect_data', function(req, res, next) {
             "score": score,
             "break": isBreak,
             "avg_score": avg_score.toFixed(2) //so far today
-        };        
+        };
+        console.log(score,isBreak);
         db.insertPoints(req.body, score , function(err) {
             if (err)
                 res.json({
