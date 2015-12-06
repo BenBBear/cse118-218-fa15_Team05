@@ -1,6 +1,7 @@
 var ip = '52.89.152.186';
 var url = 'mongodb://' + ip + ':27017/ErgoDB';
 var partPoints = 'PartPoints';
+var avg_score = 'AvgScore';
 
 var mongoose = require('mongoose');
 
@@ -12,6 +13,25 @@ var PartPoints = mongoose.model('PartPoints', {
     points: mongoose.Schema.Types.Mixed
 });
 
+var AvgScore = mongoose.model('AvgScore', {
+    userId: String,
+    avg: Number,
+    date: Date,
+});
+
+function insertAvgScore(userId, avg_score, cb){
+    var p = new AvgScore({
+            "userId": userId,
+            "avg": avg_score,
+            "date": new Date().getTime()
+        });
+    p.save(function(err){
+        if(err)
+            cb(err);
+        else
+            cb(null);
+    });
+}
 
 function insertPoints(data, score, cb) {
     var p = new PartPoints({
@@ -29,10 +49,10 @@ function insertPoints(data, score, cb) {
 }
 
 function findByDate(from, to,userId, cb) {
-    PartPoints.find( //query today up to tonight
+    AvgScore.find( //query today up to tonight
         {
             "userId":userId,
-            "created_on": {
+            "date": {
                 "$gte": from,
                 "$lt": to
             }

@@ -38,7 +38,20 @@ router.get('/get/diagnostic_data', function(req, res, next) {
 /* POST kinect data. */
 
 var algorithm = require('2015-cse218-group5-algorithm');
-var cache = require('memory-cache');
+//var cache = require('memory-cache');
+//Need to trigger a database insert on cache expiry
+//so using node-cache
+
+var node_cache = require('node-cache');
+var cache = new node_cache();
+cache.on("expired", function(userId, avg_score){
+    db.insertPoints(userId, avg_score, function(err){
+        if(err)
+           console.log("Missed inserting data in cache");
+        else
+         return;
+    });
+});
 algorithm.FrameRate(5);
 
 
@@ -52,11 +65,12 @@ router.post('/post/kinect_data', function(req, res, next) {
             avg_score = t.avg_score;
             avg_score = ((avg_score * num++) + score) / num;
         } else {
-            cache.put(req.body.userId,{
+            avg_score = score;
+            cache.set(req.body.userId,{
                 num:1,
                 avg_score:score
-            }, 1000*60*60);
-            avg_score = score;
+            }, 1000*60);
+            
         }
         result = {
             "error": null,
@@ -89,8 +103,15 @@ router.get('/get/today_score', function(req, res, next) {
         res.send("userId not sent");
         return;
     }
-    res.status(200);
-    res.send(score.toFixed(2))
+    
+    db.findByDate(date,date, userId,function(err, results){
+        res.json(results.map(function(x){
+            return {
+                score:x.score,
+                date:x.date
+            };
+        }));
+    });
 });
 /* GET home page. */
 router.get('/', function(req, res, next) {
