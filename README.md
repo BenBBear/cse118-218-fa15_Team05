@@ -2,6 +2,13 @@
 #ergoTracker
 by the MaxUbi Team
 
+Everyone spends at least four hours sitting daily, so it is important to have a good posture. Our application, ergoTracker, has a
+goal to notify users and help them keep track of their sitting posture at their workstation, office, or school. We use the Microsoft
+Kinect, a simple device, to record user’s posture while sitting and notify them with a window notification to help correct their
+posture. Also, their data will be available via the web server, with secured unique username and password, which allows the user to
+monitor their sitting routine at workstation. With this health report, users can change their sitting posture while working or
+studying.
+
 Team Memembers:
 
 CSE 218: Thripura Ajay Mohan, Xinyu Zhang
