@@ -22,7 +22,7 @@ namespace ErgoTracker
         private static string writeBasicInformation(string email, string jsonString)
         {
             double current_time = ConvertToUnixTimestamp(DateTime.Today);
-            string new_string = "\"userId\":\"" + email + "\"," + " \"Points\":[";
+            string new_string = "\"userId\":\"" + email + "\"," + " \"points\":[";
             jsonString += new_string;
             return jsonString;
         }

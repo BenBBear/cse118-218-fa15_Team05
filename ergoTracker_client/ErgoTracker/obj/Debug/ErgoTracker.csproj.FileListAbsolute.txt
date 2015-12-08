@@ -26,3 +26,4 @@ C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\Ergo
 C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.csproj.GenerateResource.Cache
 C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.exe
 C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.pdb
+C:\Users\Michael\Documents\GitHub\cse118-218-fa15_Team05\ergoTracker_client\ErgoTracker\obj\Debug\ErgoTracker.csprojResolveAssemblyReference.cache

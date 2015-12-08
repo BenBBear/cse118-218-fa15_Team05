@@ -17,6 +17,7 @@ namespace ErgoTracker
     {
         KinectSensor myKinect;
         ServerRequestHandler requestHandler;
+        bool sendOnNextCallback = false;
 
         public KinectForm(KinectSensor kinect, ServerRequestHandler _requestHandler)
         {
@@ -91,6 +92,18 @@ namespace ErgoTracker
                     markAtPoint(cloc, bitmap);
                     DrawSkeleton(skeletonToUse, bitmap);
                     DrawInformation(skeletonToUse, bitmap);
+
+                    if (sendOnNextCallback)
+                    {
+                        string data = JsonConverter.createKinectDataString(ApplicationInformation.Instance.getUsername());
+                        data = JsonConverter.writeFrameData(skeletonToUse, data);
+                        data = JsonConverter.closeJsonStringObject(data);
+                        // flush data to the server here!
+                        if (!ApplicationInformation.Instance.isTrainingModeOn())
+                            requestHandler.postKinectData(data);
+
+                        sendOnNextCallback = false;
+                    }
                 }
 
             }
@@ -275,13 +288,18 @@ namespace ErgoTracker
         {
             string jsonData = ((DataEventHandlerArgs)e).Data;
             KinectData data = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<KinectData>(jsonData);
-            Console.WriteLine(data.score);
-            float score = data.score * 100;
+            //Console.WriteLine(data.score);
+            float score = data.score;
 
             scorelabel.Text = "" + score;
             if (score >= 60) scorelabel.ForeColor = Color.DarkGreen;
             else if (score > 30 && score < 60) scorelabel.ForeColor = Color.DarkOrange;
             else scorelabel.ForeColor = Color.DarkRed;
+        }
+
+        private void button1_MouseClick(object sender, MouseEventArgs e)
+        {
+            sendOnNextCallback = true;
         }
     }
 }

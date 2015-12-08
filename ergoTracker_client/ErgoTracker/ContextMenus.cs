@@ -69,7 +69,8 @@ namespace ErgoTracker
         void Data_Review_Click(object sender, EventArgs e)
         {
             // do nothing for now
-            System.Diagnostics.Process.Start("http://maxubi.herokuapp.com/info");
+            string url = "http://maxubi.herokuapp.com/login";
+            System.Diagnostics.Process.Start(url);
         }
 
         void Open_Kinect_View_Click(object sender, EventArgs e)

@@ -14,6 +14,8 @@
         protected override void Dispose(bool disposing)
         {
             myKinect.AllFramesReady -= myKinect_AllFramesReady;
+            requestHandler.ReceivedScoreData -= HandleScoreReceived;
+
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -33,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.scorelabel = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.kinectVideoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,7 +66,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(189, 15);
             this.label2.TabIndex = 2;
-            this.label2.Text = "*Updated once every 30 seconds.";
+            this.label2.Text = "*Updated once every 10 seconds.";
             // 
             // scorelabel
             // 
@@ -76,11 +79,23 @@
             this.scorelabel.Text = "0";
             this.scorelabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(999, 214);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(253, 68);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Send Data";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+            // 
             // KinectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 737);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.scorelabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -100,5 +115,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label scorelabel;
+        private System.Windows.Forms.Button button1;
     }
 }

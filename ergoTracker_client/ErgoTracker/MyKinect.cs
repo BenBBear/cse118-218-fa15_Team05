@@ -15,6 +15,7 @@ namespace ErgoTracker
         int counter = 0;
         int totalDataCounter = 0;
         string data = "";
+        bool trackingUser = false;
 
         public MyKinect(ServerRequestHandler _requestHandler)
         {
@@ -75,6 +76,12 @@ namespace ErgoTracker
 
             if (skeletonToUse != null)
             {
+                if (!trackingUser)
+                {
+                    trackingUser = true;
+                    CustomToast.CreateToast("You are now being tracked by the Kinect.", "Diagnosis will begin now. If at any point we lose track of you we will notify you.", ToastAlertImageColors.GreeAlert);
+                }
+
                 ++counter;
                 //string jsonStr = JsonConverter.createKinectDataString("", skeletonToUse);
                 //Console.WriteLine(jsonStr);
@@ -87,7 +94,7 @@ namespace ErgoTracker
                     data = JsonConverter.writeFrameData(skeletonToUse, data);
 
                     // should be flushing to the server about once a minute
-                    if (totalDataCounter == 150)
+                    if (totalDataCounter == 50/*150*/)
                     {
                         data = JsonConverter.closeJsonStringObject(data);
                         // flush data to the server here!
@@ -95,6 +102,14 @@ namespace ErgoTracker
                             requestHandler.postKinectData(data);
                         totalDataCounter = 0;
                     }
+                }
+            }
+            else
+            {
+                if (trackingUser)
+                {
+                    trackingUser = false;
+                    CustomToast.CreateToast("You are not being tracked by the Kinect!", "Please open the Kinect Viewer to get yourself position to be tracked by the Kinect.", ToastAlertImageColors.RedAlert);
                 }
             }
 
@@ -106,7 +121,7 @@ namespace ErgoTracker
             string jsonData = ((DataEventHandlerArgs)e).Data;
             KinectData data = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<KinectData>(jsonData);
             Console.WriteLine(data.score);
-            float score = data.score * 100;
+            float score = data.score;
             if (score > 30 && score < 60) CustomToast.CreateToast("Warning!", "Your posture is not too healthy!", ToastAlertImageColors.YellowAlert);
             else if (score <= 30) CustomToast.CreateToast("Critical!", "Your posture is in the danger zone! Please fix!", ToastAlertImageColors.RedAlert);
         }

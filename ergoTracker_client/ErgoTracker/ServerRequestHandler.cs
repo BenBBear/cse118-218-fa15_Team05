@@ -10,7 +10,7 @@ namespace ErgoTracker
 {
     public class ServerRequestHandler
     {
-        string url = "http://52.89.152.186:9000"; // TODO: need to edit.
+        string url = "http://52.89.152.186:3000"; // TODO: need to edit.
         string result = null;
 
         public event EventHandler ReceivedScoreData;
@@ -23,11 +23,19 @@ namespace ErgoTracker
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamwriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            try
             {
-                streamwriter.Write(jsonData);
-                streamwriter.Flush();
-                streamwriter.Close();
+                using (var streamwriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamwriter.Write(jsonData);
+                    streamwriter.Flush();
+                    streamwriter.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return;
             }
 
             httpWebRequest.BeginGetResponse(new AsyncCallback(GetKinectDataResponseCallback), httpWebRequest);
