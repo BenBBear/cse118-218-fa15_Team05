@@ -1,7 +1,7 @@
 var Threshold = {
-    HeadPitch: -10,
-    BodyTwistPos: 15,
-    BodyTwistNeg:-15,
+    HeadPitch: -3,
+    BodyTwistPos: 3,
+    BodyTwistNeg:-6,
     LeanPos:10,
     LeanNeg:-10
 };
